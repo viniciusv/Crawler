@@ -1,7 +1,5 @@
 package com.crawler.api.controller;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +16,7 @@ public class CrawlerController {
 	private CrawlerService crawlerService;
 	
 	@GetMapping
-	public ResponseEntity<Feed> getJsonFeed() throws IOException {
+	public ResponseEntity<Feed> getJsonFeed() {
 		
 		Feed feed = this.crawlerService.returnFeed();
 		return ResponseEntity.ok().body(feed);

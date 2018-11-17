@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.crawler.api.dto.Description;
 import com.crawler.api.dto.Feed;
 import com.crawler.api.dto.Item;
+import com.crawler.api.exceptions.JsoupConnectErrorException;
 import com.crawler.api.service.CrawlerService;
 
 @Service
@@ -38,7 +39,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 	
 
 	@Override
-	public Feed returnFeed() {
+	public Feed returnFeed()  {
 		Document doc = this.returnNewDocument();
 
 		Feed feed = new Feed();
@@ -83,22 +84,19 @@ public class CrawlerServiceImpl implements CrawlerService {
 			content.setType(SELECT_LINK_TYPE);
 			for (Element ul : links) {
 				content.addContent(ul.attr(SELECT_LINK_ATTR));
-				listContent.add(content);
 			}
+			listContent.add(content);
 		}
 			
-
 		return listContent;
 	}
 
 	private Document returnNewDocument() {
 		try {
-			return Jsoup.connect(baseUrl).get();
+			return Jsoup.connect(this.baseUrl).get();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new JsoupConnectErrorException("Erro ao se conectar com a url: " + this.baseUrl);
 		}
-		return null;
 	}
 
 }
