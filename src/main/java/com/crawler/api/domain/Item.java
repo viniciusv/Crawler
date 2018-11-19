@@ -1,4 +1,4 @@
-package com.crawler.api.dto;
+package com.crawler.api.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;

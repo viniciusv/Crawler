@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crawler.api.dto.Feed;
+import com.crawler.api.domain.Feed;
 import com.crawler.api.service.CrawlerService;
 
 @RestController
@@ -17,7 +17,6 @@ public class CrawlerController {
 	
 	@GetMapping
 	public ResponseEntity<Feed> getJsonFeed() {
-		
 		Feed feed = this.crawlerService.returnFeed();
 		return ResponseEntity.ok().body(feed);
 	}

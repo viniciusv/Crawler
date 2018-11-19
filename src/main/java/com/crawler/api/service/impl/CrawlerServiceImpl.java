@@ -12,9 +12,9 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.crawler.api.dto.Description;
-import com.crawler.api.dto.Feed;
-import com.crawler.api.dto.Item;
+import com.crawler.api.domain.Description;
+import com.crawler.api.domain.Feed;
+import com.crawler.api.domain.Item;
 import com.crawler.api.exceptions.JsoupConnectErrorException;
 import com.crawler.api.service.CrawlerService;
 

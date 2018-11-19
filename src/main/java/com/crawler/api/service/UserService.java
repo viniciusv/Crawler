@@ -2,10 +2,12 @@ package com.crawler.api.service;
 
 import org.springframework.stereotype.Component;
 
-import com.crawler.api.model.User;
+import com.crawler.api.model.UserApp;
 
 @Component
 public interface UserService {
 
-	void saveUser(User user);
+	void saveUser(UserApp user);
+	
+	UserApp findByUserName(String userName);
 }

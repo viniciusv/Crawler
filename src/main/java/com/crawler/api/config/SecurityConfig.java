@@ -23,50 +23,50 @@ import com.crawler.api.security.JWTUtil;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
+
 	@Autowired
-	private JWTUtil jwtUtil ;
+	private JWTUtil jwtUtil;
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	private static final String[] PUBLIC_MATCHERS = {
 			"/h2-console/**",
 	};
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+
 		//pra acessar o banco h2 
 		http.headers().frameOptions().disable();
-		
+
 		http.cors().and().csrf().disable();
-		
+
 		http.authorizeRequests()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
 			.anyRequest().authenticated();
-		
+
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, this.userDetailsService));
-		
+
 		//tá assegurando q não vai guardar sessão de usuário 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
-	
+
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+		auth.userDetailsService(this.userDetailsService).passwordEncoder(this.bCryptPasswordEncoder());
 	}
-	
+
 	@Bean
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
 	}
-	
-	@Bean 
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
+	@Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
