@@ -10,6 +10,7 @@ Criar um crawler que leia este [feed](http://revistaautoesporte.globo.com/rss/ul
 * [JWT](https://jwt.io/) - Autenticação com api rest.
 * [JSOUP](https://jsoup.org/) - É uma biblioteca Java para trabalhar com HTML.
 * [Docker Maven Plugin](https://github.com/spotify/docker-maven-plugin#specify-build-info-in-the-pom) - Um plugin Maven para construir e imagens do Docker.
+* [Junit](https://github.com/junit-team/junit5/) - Para fazer o test da aplicação.
 
 # Let's go
 ### Clone o projeto:
@@ -25,7 +26,7 @@ mvn clean package docker:build
 * O build vai rodar todos os testes da aplicação e vai criar o arquivo **Dorckerfile**.
 
 ### Containerize It:
-Após o build vá para pasta docker dentro da pasta target
+Após o build vá para pasta docker dentro da pasta target.
 ```
 Crawler
 |-- target/
@@ -49,12 +50,16 @@ http://localhost:9999/login
   "password": "123AbC8jO"
 }
 ```
+![Postman1](https://github.com/viniciusv/Crawler/blob/master/src/main/resources/img/postman1.png)
 
 Depois do login realizado, acessar a url abaixo, para receber o Json da página:
 ```
 http://localhost:9999/crawler
 ```
-Exemplo:
+
+![Postman2](https://github.com/viniciusv/Crawler/blob/master/src/main/resources/img/postman2.png)
+
+Exemplo Json:
 ```
 {
     "items": [
