@@ -42,10 +42,10 @@ Acessar a url:
 ```
 http://localhost:9999/login
 ```
-* Para realizar esses testes na api aconselho usar o [POSTMAN](https://www.getpostman.com/), para enviar um JSON de credenciais.
+* Para realizar esses testes na api aconselho usar o [Postman](https://www.getpostman.com/), para enviar um JSON de credenciais.
 ```
 {
-	"userName" : "userFirst",
+  "userName" : "userFirst",
   "password": "123AbC8jO"
 }
 ```
