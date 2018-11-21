@@ -8,33 +8,33 @@ public class Feed implements Serializable{
 	
 	private static final long serialVersionUID = 6821940994598476549L;
 	
-	private List<Item> Items; 
+	private List<Item> items; 
 	
 	public Feed() {
-		this.Items = new ArrayList<Item>();
+		this.items = new ArrayList<Item>();
 	}
 	
 	public Feed(ArrayList<Item> listItems) {
-		this.Items = listItems;
+		this.items = listItems;
 	}
 	
 	public List<Item> getItems() {
-		return Items;
+		return items;
 	}
 	
 	public void setItems(List<Item> Items) {
-		this.Items = Items;
+		this.items = Items;
 	}
 	
 	public void addItem(Item item) {
-		this.Items.add(item);
+		this.items.add(item);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((Items == null) ? 0 : Items.hashCode());
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
 		return result;
 	}
 
@@ -47,10 +47,10 @@ public class Feed implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Feed other = (Feed) obj;
-		if (Items == null) {
-			if (other.Items != null)
+		if (items == null) {
+			if (other.items != null)
 				return false;
-		} else if (!Items.equals(other.Items))
+		} else if (!items.equals(other.items))
 			return false;
 		return true;
 	}

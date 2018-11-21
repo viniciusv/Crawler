@@ -12,6 +12,7 @@ import com.crawler.api.service.CrawlerService;
 @RestController
 @RequestMapping(value="/crawler")
 public class CrawlerController {
+	
 	@Autowired
 	private CrawlerService crawlerService;
 	

@@ -4,7 +4,6 @@ package com.crawler.api.service.impl;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +22,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public void saveUser(@Valid UserApp user) {
-		if(findByUserName(user.getUserName())!=null) {
+		if(findByUserName(user.getUserName())==null) {
 			String passwordEncode = this.bCryptPasswordEncoder.encode(user.getPassword()); 
 			user.setPassword(passwordEncode);
 			this.userRepository.save(user);	
@@ -33,10 +32,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserApp findByUserName(String userName) {
 		UserApp findUser = this.userRepository.findByUserName(userName);
-		if (findUser == null)
-			throw new UsernameNotFoundException("Username not found! UserName: " + userName);
-		else
-			return findUser;
+		return findUser;
 	}
 
 }

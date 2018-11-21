@@ -16,8 +16,8 @@ public class DBservice {
 	
 	public void instantiateTestDatabase() throws ParseException {
 
-		UserApp user = new UserApp(null, "userF", "userF", "123AbC");
-		UserApp userSecond = new UserApp(null, "userS", "userS", "456AeF");
+		UserApp user = new UserApp(null, "userFirst", "userFirst", "123AbC8jO");
+		UserApp userSecond = new UserApp(null, "userSecond", "userSecond", "456AeFLe1");
 		
 		userService.saveUser(user);
 		userService.saveUser(userSecond);

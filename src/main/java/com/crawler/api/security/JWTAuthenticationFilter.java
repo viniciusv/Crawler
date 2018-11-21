@@ -27,12 +27,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	private AuthenticationManager authenticationManager;
     
     private JWTUtil jwtUtil;
-    
-    @Value("${jwt.authorization}")
-	private String authorization;
-    
-    @Value("${jwt.bearer}")
-	private String bearer;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
     	setAuthenticationFailureHandler(new JWTAuthenticationFailureHandler());
@@ -65,7 +59,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	
 		String username = ((User) auth.getPrincipal()).getUsername();
         String token = jwtUtil.generateToken(username);
-        res.addHeader(this.authorization, this.bearer + token);
+        res.addHeader("Authorization", "Bearer " + token);
 	}
 	
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {
