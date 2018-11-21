@@ -3,10 +3,12 @@ package com.crawler.api.service.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +39,6 @@ public class CrawlerServiceImpl implements CrawlerService {
 	private static final String SELECT_LINK_TYPE = "links";
 	private static final String SELECT_LINK_ATTR = "href";
 	
-
 	@Override
 	public Feed returnFeed()  {
 		Document doc = this.returnNewDocument();
@@ -56,37 +57,36 @@ public class CrawlerServiceImpl implements CrawlerService {
 		return feed;
 	}
 
+	private void createDescription(String type, List<String> value, List<Description> listContent) {
+		Description content = new Description();
+		content.setType(type);
+		content.setContent(value);
+		listContent.add(content);
+	}
+	
+	private void createDescription(String type, String value, List<Description> listContent) {
+		Description content = new Description();
+		content.setType(type);
+		content.addContent(value);
+		listContent.add(content);
+	}
+	
 	private List<Description> returnListDescriptions(Document docDescription) {
 		List<Description> listContent = new ArrayList<Description>();
-		Description content;
 		
 		Elements imgs = docDescription.select(SELECT_IMG);
-		for (Element img : imgs) {
-			content = new Description();
-			content.setType(SELECT_IMG_TYPE);
-			content.addContent(img.attr(SELECT_IMG_ATTR));
-			listContent.add(content);
-		}
-
+		imgs.stream().forEach(img ->{
+			this.createDescription(SELECT_IMG_TYPE, img.attr(SELECT_IMG_ATTR), listContent);
+		});
+		
 		Elements ps = docDescription.select(SELECT_P);
-		for (Element p : ps) {
-			if(!p.text().isEmpty())  {
-				content = new Description();
-				content.setType(SELECT_P_TYPE);
-				content.addContent(p.text());
-				listContent.add(content);	
-			}		    	
-		}
+		ps.stream().filter(p->p.text().isEmpty()).forEach(p->{
+			this.createDescription(SELECT_P_TYPE, p.text(), listContent);
+		});
 
 		Elements links = docDescription.select(SELECT_LINK);
-		if(links.size() > 0) {
-			content = new Description();
-			content.setType(SELECT_LINK_TYPE);
-			for (Element ul : links) {
-				content.addContent(ul.attr(SELECT_LINK_ATTR));
-			}
-			listContent.add(content);
-		}
+		List<String> hrefs = links.stream().map(a -> a.attr(SELECT_LINK_ATTR)).collect(Collectors.toList());
+		this.createDescription(SELECT_LINK_TYPE, hrefs, listContent);
 			
 		return listContent;
 	}
@@ -96,6 +96,57 @@ public class CrawlerServiceImpl implements CrawlerService {
 			return Jsoup.connect(this.baseUrl).get();
 		} catch (IOException e) {
 			throw new JsoupConnectErrorException("Erro ao se conectar com a url: " + this.baseUrl);
+		}
+	}
+	
+	
+	/*
+	 * 
+	 ** CÓDIGO INCOMPLETO, RESOLVER O PROBLEMA USANDO RECURSIVIDADE **
+	 * 
+	 ** Eu peguei o titulo e o link, só falta fazer a parte da descrição ** 
+	 * 
+	 */
+	
+	
+	public void call() {
+		Document doc = this.returnNewDocument();
+		for(Node no : doc.childNodes())
+			this.returnFeed2(no);
+
+	}
+	
+	private void returnFeed2(Node no) {
+				
+		if(no.parent().nodeName().equals("item") || no.parent().nodeName().equals("description")) {
+			if(no.nodeName().equals("title")) {
+				if(no instanceof Element) {
+					Element title = (Element)no;
+					System.out.println("TITULO : " + title.text()+"\n");
+				}				
+			}
+			if(no.nodeName().equals("description") || no.parent().nodeName().equals("description")) {
+				if(no instanceof Element) {
+					System.out.println("desc : " + no.nodeName()+"\n");
+					Document docDescription = Jsoup.parse(no.outerHtml(), "", Parser.htmlParser());
+					for(Node no2 : docDescription.childNodes()) {
+						System.out.println("desc no: " + no2.nodeName()+"\n");
+					}
+						
+				}	
+			}
+			if(no.nodeName().equals("link")) {
+				if(no instanceof Element) {
+					Element link = (Element)no;
+					System.out.println("LINK : " + link.text()+"\n");
+				}					
+			}
+			
+		}else {
+			if(no.childNodeSize() != 0) {
+				for(Node no2 : no.childNodes())
+					this.returnFeed2(no2);
+			}
 		}
 	}
 

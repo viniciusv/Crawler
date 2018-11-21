@@ -31,7 +31,7 @@ public class UserApp implements Serializable {
 	private String userName;
 	
 	@NotEmpty(message="Password required")
-	@Length(min=5, message="Size must be between 5 and 10 characters")
+	@Length(min=5, message="Size must be min 5 characters")
 	private String password;
 	
 	public UserApp() {}

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.crawler.api.exceptions.UsernameExistException;
 import com.crawler.api.model.UserApp;
 import com.crawler.api.repository.UserRepository;
 import com.crawler.api.service.UserService;
@@ -26,7 +27,9 @@ public class UserServiceImpl implements UserService {
 			String passwordEncode = this.bCryptPasswordEncoder.encode(user.getPassword()); 
 			user.setPassword(passwordEncode);
 			this.userRepository.save(user);	
-		}		
+		}else {
+			throw new UsernameExistException("Exist user with userName " + user.getUserName());
+		}
 	}
 
 	@Override
