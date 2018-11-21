@@ -2,6 +2,7 @@ package com.crawler.api.security;
 
 import java.util.Date;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
+	
+	static Logger logger = Logger.getLogger(JWTUtil.class);
 	
 	@Value("${jwt.secret}")
 	private String secret;

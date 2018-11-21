@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -22,6 +23,8 @@ import com.crawler.api.service.CrawlerService;
 
 @Service
 public class CrawlerServiceImpl implements CrawlerService {
+	
+	static Logger logger = Logger.getLogger(CrawlerServiceImpl.class);
 
 	@Value("${url.base.globo.api}")
 	private String baseUrl;
@@ -54,6 +57,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 			feed.addItem(item);
 		}
+		logger.info("Feed created successfully.");
 		return feed;
 	}
 
@@ -80,7 +84,7 @@ public class CrawlerServiceImpl implements CrawlerService {
 		});
 		
 		Elements ps = docDescription.select(SELECT_P);
-		ps.stream().filter(p->p.text().isEmpty()).forEach(p->{
+		ps.stream().filter(p->!p.text().isEmpty()).forEach(p->{
 			this.createDescription(SELECT_P_TYPE, p.text(), listContent);
 		});
 
@@ -93,20 +97,23 @@ public class CrawlerServiceImpl implements CrawlerService {
 
 	private Document returnNewDocument() {
 		try {
+			logger.info("Connect url: " + this.baseUrl);
 			return Jsoup.connect(this.baseUrl).get();
 		} catch (IOException e) {
+			logger.error(e.getMessage());
 			throw new JsoupConnectErrorException("Erro ao se conectar com a url: " + this.baseUrl);
 		}
 	}
 	
 	
 	/*
-	 * 
-	 ** CÓDIGO INCOMPLETO, RESOLVER O PROBLEMA USANDO RECURSIVIDADE **
-	 * 
-	 ** Eu peguei o titulo e o link, só falta fazer a parte da descrição ** 
-	 * 
-	 */
+	 ********************************************************************************
+	 **                                                                            **
+	 ** Uma segunda solução para o crawler é usando RECURSIVIDADE                  **
+	 ** A solução está incompleta, só falta a parte da descrição do item           ** 
+	 ** Assim eu retorno o feed conforme a aplicação vai lendo a página, nó por nó.**
+	 **                                                                            **
+	 ********************************************************************************/
 	
 	
 	public void call() {

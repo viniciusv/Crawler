@@ -2,6 +2,7 @@ package com.crawler.api.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,15 +14,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ResourceExceptionHandle {
 	
+	static Logger logger = Logger.getLogger(ResourceExceptionHandle.class);
+	
 	@ExceptionHandler(JsoupConnectErrorException.class)
 	public ResponseEntity<StandardError> jsoupConnectErrorException(JsoupConnectErrorException e, HttpServletRequest request){
 		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+		logger.error(e.getMessage());
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);		
 	}
 		
 	@ExceptionHandler(UsernameNotFoundException.class)
 	public ResponseEntity<StandardError> objectNotFound(UsernameNotFoundException e, HttpServletRequest request){
 		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+		logger.error(e.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);		
 	}
 	

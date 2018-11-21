@@ -1,5 +1,6 @@
 package com.crawler.api.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,8 @@ import com.crawler.api.service.CrawlerService;
 @RestController
 @RequestMapping(value="/crawler")
 public class CrawlerController {
+	
+	static Logger logger = Logger.getLogger(CrawlerController.class);
 	
 	@Autowired
 	private CrawlerService crawlerService;

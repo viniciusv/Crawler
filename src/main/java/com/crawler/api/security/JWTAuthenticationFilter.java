@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+	static Logger logger = Logger.getLogger(JWTAuthenticationFilter.class);
+	
 	private AuthenticationManager authenticationManager;
     
     private JWTUtil jwtUtil;
@@ -46,6 +49,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	        return auth;
 		}
 		catch (IOException e) {
+			logger.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -66,6 +70,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         @Override
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
                 throws IOException, ServletException {
+        	logger.error("Error in authentication");
             response.setStatus(401);
             response.setContentType("application/json"); 
             response.getWriter().append(json());

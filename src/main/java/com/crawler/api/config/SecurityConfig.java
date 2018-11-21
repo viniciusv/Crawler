@@ -23,7 +23,7 @@ import com.crawler.api.security.JWTUtil;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
-
+	
 	@Autowired
 	private JWTUtil jwtUtil;
 	
@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
-		//pra acessar o banco h2 
+		//to access the h2 database
 		http.headers().frameOptions().disable();
 
 		http.cors().and().csrf().disable();
@@ -49,7 +49,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, this.userDetailsService));
 
-		//tá assegurando q não vai guardar sessão de usuário 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 
