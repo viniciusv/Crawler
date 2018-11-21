@@ -29,9 +29,4 @@ public class CrawlerApplication {
 		dbService.instantiateTestDatabase();
 		return true;
 	}
-	
-	/*@Bean 
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-		return new PropertySourcesPlaceholderConfigurer();
-	}*/
 }
